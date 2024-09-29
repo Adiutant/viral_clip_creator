@@ -58,7 +58,7 @@ class Task:
             self.data["content"] = content
             self.status_code = status_code
 
-def process_intervals(intervals, model):
+def process_intervals(intervals, source,  model):
     temp_files_final = []
     if len(intervals) > 0:
         for start, stop in intervals:
@@ -68,7 +68,7 @@ def process_intervals(intervals, model):
                 with tempfile.NamedTemporaryFile(delete=False, suffix='.mp4') as temp_out:
                     Output = temp_out.name
 
-                crop_video("Sub.mp4", Output, start, stop)
+                crop_video(source, Output, start, stop)
 
                 with tempfile.NamedTemporaryFile(delete=False, suffix='.mp4') as temp_cropped:
                     cropped = temp_cropped.name
@@ -118,10 +118,9 @@ class MainApplication:
         self.cache[task.data["id"]] = task
 
     def get_clips_boundaries(self, filename):
-        Vid = download_youtube_video(filename)
-        if Vid:
+        if filename:
             # Vid = Vid.replace(".webm", ".mp4")
-            print(f"Downloaded video and audio files successfully! at {Vid}")
+            print(f"Downloaded video and audio files successfully! at {filename}")
 
             Audio = extractAudio(filename)
             if Audio:
@@ -132,7 +131,8 @@ class MainApplication:
                               transcription in transcriptions]
                 intervals, viralities = search_peaks(dynamics_list, transcriptions, sentiments, verbose=False)
                 if len(transcriptions) > 0:
-                    files = process_intervals(intervals[:2], self.whisper_model)
+                    print(f"Найдено {len(intervals)} клипов")
+                    files = process_intervals(intervals, self.whisper_model)
                     return {
                         "highlights": [
                             {
@@ -149,7 +149,7 @@ class MainApplication:
                                 ],
                                 "file": f"{DOMEN}/download/{file}"
                             }
-                            for (start, end), (file, transcription), virality in zip(intervals[:2], files, viralities[:2])
+                            for (start, end), (file, transcription), virality in zip(intervals, files, viralities)
                         ]
                     }
 
