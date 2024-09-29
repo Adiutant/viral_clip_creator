@@ -132,7 +132,7 @@ class MainApplication:
                 intervals, viralities = search_peaks(dynamics_list, transcriptions, sentiments, verbose=False)
                 if len(transcriptions) > 0:
                     print(f"Найдено {len(intervals)} клипов")
-                    files = process_intervals(intervals, self.whisper_model)
+                    files = process_intervals(intervals, filename, self.whisper_model)
                     return {
                         "highlights": [
                             {
