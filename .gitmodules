@@ -1,0 +1,6 @@
+[submodule "DigitalBreakthroughVirialClips"]
+	path = DigitalBreakthroughVirialClips
+	url = https://github.com/Midnight-Knight/DigitalBreakthroughVirialClips
+[submodule "cp-hack-backend"]
+	path = cp-hack-backend
+	url = https://github.com/eiparfenov/cp-hack-backend
