@@ -79,10 +79,9 @@ def detect_faces_and_speakers(input_video_path, output_video_path):
                 cv2.rectangle(frame, (x, y), (x1, y1), (0, 255, 0), 2)
 
                 # Assuming lips are approximately at the bottom third of the face
-                lip_distance = abs((y + 2 * face_height // 3) - (y1))
+                lip_distance = abs((y + 2 * face_height // 3) - y1)
                 Add.append([[x, y, x1, y1], lip_distance])
 
-                MaxDif == max(lip_distance, MaxDif)
         for i in range(detections.shape[2]):
             confidence = detections[0, 0, i, 2]
             if confidence > 0.3:  # Confidence threshold
